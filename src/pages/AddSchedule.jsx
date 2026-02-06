@@ -23,7 +23,7 @@ const formatTime12Hour = (date) => {
   }
   return `${hour} : ${minute} : ${second} ${AmPm}`;
 };
-console.log(formatTime12Hour(new Date()));
+// console.log(formatTime12Hour(new Date()));
 
 const AddSchedule = () => {
   // ======================
@@ -61,7 +61,7 @@ const AddSchedule = () => {
       body: JSON.stringify(info),
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.insertedId) {
       Swal.fire("schedule created in db");
     }

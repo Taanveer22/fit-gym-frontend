@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ScheduleListItem from "./ScheduleListItem";
+import Swal from "sweetalert2";
 
 const ScheduleList = () => {
   const [schedules, setSchedules] = useState([]);
@@ -8,8 +9,27 @@ const ScheduleList = () => {
     fetch(`http://localhost:5000/schedules`)
       .then((res) => res.json())
       .then((data) => setSchedules(data));
-    console.log(schedules);
   }, []);
+
+  // console.log(schedules);
+
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/schedules/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.deletedCount > 0) {
+          Swal.fire("deleted schedule from db");
+        }
+      });
+
+    const remainingSchedules = schedules.filter(
+      (element) => element._id !== id,
+    );
+    setSchedules(remainingSchedules);
+  };
 
   return (
     <div>
@@ -41,6 +61,7 @@ const ScheduleList = () => {
           element={element}
           index={index}
           key={element._id}
+          handleDelete={handleDelete}
         ></ScheduleListItem>
       ))}
     </div>

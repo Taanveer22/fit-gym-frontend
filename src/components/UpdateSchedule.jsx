@@ -1,25 +1,7 @@
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLoaderData } from "react-router-dom";
 
 const UpdateSchedule = () => {
-  const loadedSchedule = useLoaderData();
-  console.log(loadedSchedule);
-
-  // normal input
-  const [title, setTitle] = useState(loadedSchedule?.title || "");
-  const [day, setDay] = useState(loadedSchedule?.day || "");
-
-  // datepicker input
-  const [selectedDate, setSelectedDate] = useState(
-    loadedSchedule?.date ? new Date(loadedSchedule.date) : new Date(),
-  );
-
-  const [selectedTime, setSelectedTime] = useState(
-    loadedSchedule?.time ? new Date(loadedSchedule.time) : new Date(),
-  );
-
   const handleAddScheduleForm = (e) => {
     e.preventDefault();
   };
@@ -36,8 +18,6 @@ const UpdateSchedule = () => {
               Title
             </legend>
             <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
               type="text"
               name="title"
               className="input w-full"
@@ -48,22 +28,13 @@ const UpdateSchedule = () => {
             <legend className="fieldset-legend text-lg font-semibold">
               Date
             </legend>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              className="input w-full"
-            ></DatePicker>
+            <DatePicker className="input w-full"></DatePicker>
           </fieldset>
           <fieldset className="fieldset w-full ">
             <legend className="fieldset-legend text-lg font-semibold">
               Day
             </legend>
-            <select
-              value={day}
-              onChange={(e) => setDay(e.target.value)}
-              className="input w-full"
-              name="day"
-            >
+            <select className="input w-full" name="day">
               <option value="friday">Friday</option>
               <option value="saturday">Saturday</option>
               <option value="sunday">Sunday</option>
@@ -78,8 +49,6 @@ const UpdateSchedule = () => {
               Time
             </legend>
             <DatePicker
-              selected={selectedTime}
-              onChange={(time) => setSelectedTime(time)}
               className="input w-full"
               showTimeSelect
               showTimeSelectOnly

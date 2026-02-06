@@ -1,9 +1,16 @@
-
+import { useEffect, useState } from "react";
 import ScheduleListItem from "./ScheduleListItem";
 
-
 const ScheduleList = () => {
- 
+  const [schedules, setSchedules] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/schedules`)
+      .then((res) => res.json())
+      .then((data) => setSchedules(data));
+    console.log(schedules);
+  }, []);
+
   return (
     <div>
       {/* search bar */}
@@ -29,7 +36,13 @@ const ScheduleList = () => {
         </label>
       </div>
       {/* send data to child */}
-     
+      {schedules.map((element, index) => (
+        <ScheduleListItem
+          element={element}
+          index={index}
+          key={element._id}
+        ></ScheduleListItem>
+      ))}
     </div>
   );
 };

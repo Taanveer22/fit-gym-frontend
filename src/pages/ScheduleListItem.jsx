@@ -4,12 +4,12 @@ import { FaCheck } from "react-icons/fa6";
 import { FaCheckDouble } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const ScheduleListItem = ({ item, index, handleDelete }) => {
-  // console.log(item, index);
+const ScheduleListItem = ({ element, index, handleDelete }) => {
+  // console.log(element, index);
 
   return (
     <div>
-      {/* table list item */}
+      {/* table list items */}
       <div className="overflow-x-auto">
         <table className="table table-xs">
           <thead>
@@ -25,20 +25,20 @@ const ScheduleListItem = ({ item, index, handleDelete }) => {
           <tbody>
             <tr>
               <th>{index + 1}</th>
-              <td>{item?.title}</td>
-              <td>{item?.day}</td>
-              <td>{item?.date}</td>
-              <td>{item?.time}</td>
+              <td>{element?.title}</td>
+              <td>{element?.day}</td>
+              <td>{element?.date}</td>
+              <td>{element?.time}</td>
               <td>
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => handleDelete(item?._id)}
+                    onClick={() => handleDelete(element?._id)}
                     className="btn btn-xs btn-secondary"
                   >
                     <MdDeleteForever size={15}></MdDeleteForever>
                   </button>
                   <Link
-                    to={`/updateSchedule/${item._id}`}
+                    to={`/updateSchedule/${element._id}`}
                     className="btn btn-xs btn-secondary"
                   >
                     <FaFile size={15}></FaFile>

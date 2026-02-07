@@ -1,104 +1,85 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 import { useLoaderData, useParams } from "react-router-dom";
-
-// ----------------------------
-// Helper to safely parse ISO string to Date
-// ----------------------------
-const parseDate = (value) => {
-  if (!value) {
-    // if value is missing, use current date
-    return new Date();
-  }
-  const date = new Date(value);
-  if (isNaN(date.getTime())) {
-    //  if invalid date, use current date
-    return new Date();
-  }
-  // valid date, return it
-  return date;
-};
+import {
+  parseDate,
+  formatDateOnly,
+  formatTime12Hour,
+} from "../utils/dateTimeUtils";
 
 const UpdateSchedule = () => {
   const { id } = useParams();
-  // console.log(id);
   const loadedData = useLoaderData();
-  // console.log(loadedData);
 
-  // ----------------------------
-  // Initialize state directly from loadedData
-  // This avoids calling setState in useEffect
-  // ----------------------------
   const [title, setTitle] = useState(loadedData?.title || "");
   const [day, setDay] = useState(loadedData?.day || "friday");
-  const [time, setTime] = useState(parseDate(loadedData?.time));
   const [date, setDate] = useState(parseDate(loadedData?.date));
+  const [time, setTime] = useState(parseDate(loadedData?.time));
 
-  const handleAddScheduleForm = async (e) => {
+  const handleUpdateSchedule = async (e) => {
     e.preventDefault();
+    const formattedDate = formatDateOnly(date);
+    const formattedTime = formatTime12Hour(time);
 
-    // Convert Date objects back to ISO strings for backend
-    const formattedDate = date.toISOString();
-    const formattedTime = time.toISOString();
-
-    const info = {
-      title: title,
-      day: day,
-      time: formattedTime,
-      date: formattedDate,
-    };
+    const info = { title, day, date: formattedDate, time: formattedTime };
     console.log(info);
 
-    // TODO: Make API call to update the schedule(later)
     const response = await fetch(`http://localhost:5000/schedules/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info),
     });
+
     const data = await response.json();
-    console.log(data);
+    if (data.modifiedCount || data.acknowledged)
+      Swal.fire("Schedule updated successfully");
   };
 
   return (
     <div className="bg-gray-200 py-12 lg:py-20">
-      <h1 className="text-xl sm:text-2xl lg:text-4xl font-medium text-center my-3">
+      <h1 className="text-2xl font-medium text-center my-3">
         Update Your Schedule
       </h1>
-      <form onSubmit={handleAddScheduleForm} className="w-11/12 mx-auto">
+      <form onSubmit={handleUpdateSchedule} className="w-11/12 mx-auto">
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">
+          {/* Title */}
           <fieldset className="fieldset w-full">
             <legend className="fieldset-legend text-lg font-semibold">
               Title
             </legend>
             <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
               type="text"
               className="input w-full"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
             />
           </fieldset>
-          <fieldset className="fieldset w-full ">
+
+          {/* Date */}
+          <fieldset className="fieldset w-full">
             <legend className="fieldset-legend text-lg font-semibold">
               Date
             </legend>
             <DatePicker
+              className="input w-full"
               selected={date}
               onChange={(d) => d && setDate(d)}
-              className="input w-full"
-            ></DatePicker>
+              dateFormat="yyyy-MM-dd"
+            />
           </fieldset>
-          <fieldset className="fieldset w-full ">
+
+          {/* Day */}
+          <fieldset className="fieldset w-full">
             <legend className="fieldset-legend text-lg font-semibold">
               Day
             </legend>
             <select
+              className="input w-full"
               value={day}
               onChange={(e) => setDay(e.target.value)}
-              className="input w-full"
             >
               <option value="friday">Friday</option>
               <option value="saturday">Saturday</option>
@@ -109,20 +90,22 @@ const UpdateSchedule = () => {
               <option value="thursday">Thursday</option>
             </select>
           </fieldset>
-          <fieldset className="fieldset w-full ">
+
+          {/* Time */}
+          <fieldset className="fieldset w-full">
             <legend className="fieldset-legend text-lg font-semibold">
               Time
             </legend>
             <DatePicker
+              className="input w-full"
               selected={time}
               onChange={(t) => t && setTime(t)}
-              className="input w-full"
               showTimeSelect
               showTimeSelectOnly
               timeIntervals={15}
               timeCaption="Time"
               dateFormat="h:mm aa"
-            ></DatePicker>
+            />
           </fieldset>
         </div>
         <div>

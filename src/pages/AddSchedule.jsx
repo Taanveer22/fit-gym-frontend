@@ -48,7 +48,7 @@ const AddSchedule = () => {
   return (
     <div className="bg-rose-200 py-12 lg:py-20">
       <h1 className="text-xl sm:text-2xl lg:text-4xl font-medium text-center my-3">
-        Select Your Schedule
+        Add Your Schedule
       </h1>
       <form onSubmit={handleAddScheduleForm} className="w-11/12 mx-auto">
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">

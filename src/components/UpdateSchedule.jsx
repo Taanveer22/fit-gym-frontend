@@ -22,9 +22,9 @@ const parseDate = (value) => {
 
 const UpdateSchedule = () => {
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   const loadedData = useLoaderData();
-  console.log(loadedData);
+  // console.log(loadedData);
 
   // ----------------------------
   // Initialize state directly from loadedData
@@ -35,7 +35,7 @@ const UpdateSchedule = () => {
   const [time, setTime] = useState(parseDate(loadedData?.time));
   const [date, setDate] = useState(parseDate(loadedData?.date));
 
-  const handleAddScheduleForm = (e) => {
+  const handleAddScheduleForm = async (e) => {
     e.preventDefault();
 
     // Convert Date objects back to ISO strings for backend
@@ -51,12 +51,21 @@ const UpdateSchedule = () => {
     console.log(info);
 
     // TODO: Make API call to update the schedule(later)
+    const response = await fetch(`http://localhost:5000/schedules/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    });
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
     <div className="bg-gray-200 py-12 lg:py-20">
       <h1 className="text-xl sm:text-2xl lg:text-4xl font-medium text-center my-3">
-        Select Your Schedule
+        Update Your Schedule
       </h1>
       <form onSubmit={handleAddScheduleForm} className="w-11/12 mx-auto">
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">

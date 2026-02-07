@@ -3,28 +3,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 
-// ======================
-// Utility function
-// Format time into 12-hour AM/PM format
-// ======================
-const formatTime12Hour = (date) => {
-  // get hour from date
-  let hour = date.getHours();
-  // get minute and always keep 2 digits (ex: 05)
-  const minute = String(date.getMinutes()).padStart(2, "0");
-  // get second and always keep 2 digits (ex: 05)
-  const second = String(date.getSeconds()).padStart(2, "0");
-  // check AM or PM
-  const AmPm = hour >= 12 ? "PM" : "AM";
-  // convert 24-hour to 12-hour format
-  hour = hour % 12;
-  if (hour === 0) {
-    hour = 12;
-  }
-  return `${hour} : ${minute} : ${second} ${AmPm}`;
-};
-// console.log(formatTime12Hour(new Date()));
-
 const AddSchedule = () => {
   // ======================
   // State Management
@@ -38,18 +16,18 @@ const AddSchedule = () => {
   // ======================
   const handleAddScheduleForm = async (e) => {
     e.preventDefault();
-    const formattedDate = selectedDate.toLocaleDateString("en-CA");
-    const formattedTime = formatTime12Hour(selectedTime);
+    const formattedDate = selectedDate.toISOString();
+    const formattedTime = selectedTime.toISOString();
     const title = e.target.title.value;
     const day = e.target.day.value;
-    // console.log(formattedDate, formattedTime, title, day);
+    // ✅ Store ISO strings (backend-friendly)
     const info = {
       date: formattedDate,
       time: formattedTime,
       title: title,
       day: day,
     };
-    // console.log(info);
+    console.log(info);
     // ======================
     // API Request
     // ======================
@@ -95,6 +73,7 @@ const AddSchedule = () => {
               className="input w-full"
               selected={selectedDate}
               onChange={(date) => date && setSelectedDate(date)}
+              dateFormat="yyyy-MM-dd"
             ></DatePicker>
           </fieldset>
           {/* day */}

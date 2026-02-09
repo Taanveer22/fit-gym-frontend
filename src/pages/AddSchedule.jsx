@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { formatDateOnly, formatTime12Hour } from "../utils/dateTimeUtils";
+import { API_URL } from "../utils/api";
 
 const AddSchedule = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -23,7 +24,7 @@ const AddSchedule = () => {
 
     // console.log(info);
 
-    const response = await fetch(`http://localhost:5000/createSchedules`, {
+    const response = await fetch(`${API_URL}/createSchedules`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info),

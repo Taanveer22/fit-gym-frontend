@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ScheduleListItem from "./ScheduleListItem";
 import Swal from "sweetalert2";
+import { API_URL } from "../utils/api";
 
 const ScheduleList = () => {
   const [schedules, setSchedules] = useState([]);
@@ -9,12 +10,12 @@ const ScheduleList = () => {
   useEffect(() => {
     // if search text exists → use search query
     const url = searchText
-      ? `http://localhost:5000/schedules?search=${searchText}`
-      : `http://localhost:5000/schedules`;
+      ? `${API_URL}/schedules?search=${searchText}`
+      : `${API_URL}/schedules`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setSchedules(data);
       });
   }, [searchText]);

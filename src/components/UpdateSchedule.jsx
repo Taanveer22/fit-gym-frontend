@@ -9,6 +9,8 @@ import {
   formatTime12Hour,
 } from "../utils/dateTimeUtils";
 
+import { API_URL } from "../utils/api";
+
 const UpdateSchedule = () => {
   const { id } = useParams();
   const loadedData = useLoaderData();
@@ -26,7 +28,7 @@ const UpdateSchedule = () => {
     const info = { title, day, date: formattedDate, time: formattedTime };
     console.log(info);
 
-    const response = await fetch(`http://localhost:5000/schedules/${id}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info),

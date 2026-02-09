@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthContextProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { registerUser, updateUserProfile } = useContext(AuthContext);
@@ -12,18 +13,18 @@ const Register = () => {
     const password = e.target.password.value;
     // console.log(name, photo, email, password);
     registerUser(email, password)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
+        Swal.fire("register done");
         updateUserProfile(name, photo)
-          .then((result) => {
-            console.log(result);
+          .then(() => {
+            Swal.fire("update profile done");
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
+            Swal.fire("update profile failed");
           });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        Swal.fire("register failed");
       });
   };
 

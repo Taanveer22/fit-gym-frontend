@@ -26,9 +26,9 @@ const UpdateSchedule = () => {
     const formattedTime = formatTime12Hour(time);
 
     const info = { title, day, date: formattedDate, time: formattedTime };
-    console.log(info);
+    // console.log(info);
 
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/schedules/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info),

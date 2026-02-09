@@ -20,8 +20,8 @@ const ScheduleList = () => {
       });
   }, [searchText]);
 
-  console.log(schedules);
-  console.log(searchText);
+  // console.log(schedules);
+  // console.log(searchText);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/schedules/${id}`, {

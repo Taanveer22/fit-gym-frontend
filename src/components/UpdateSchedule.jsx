@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
@@ -15,10 +15,28 @@ const UpdateSchedule = () => {
   const { id } = useParams();
   const loadedData = useLoaderData();
 
-  const [title, setTitle] = useState(loadedData?.title || "");
-  const [day, setDay] = useState(loadedData?.day || "friday");
-  const [date, setDate] = useState(parseDate(loadedData?.date));
-  const [time, setTime] = useState(parseDate(loadedData?.time));
+  // -------------------------
+  // State (initial empty)
+  // -------------------------
+  const [title, setTitle] = useState("");
+  const [day, setDay] = useState("friday");
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+
+  // -------------------------
+  // Sync loader data to state
+  // IMPORTANT: useEffect needed
+  // -------------------------
+  useEffect(() => {
+    if (!loadedData) return;
+    const updateForm = () => {
+      setTitle(loadedData?.title || "");
+      setDay(loadedData.day || "friday");
+      setDate(parseDate(loadedData.date));
+      setTime(parseDate(loadedData.time));
+    };
+    updateForm();
+  }, [loadedData]);
 
   const handleUpdateSchedule = async (e) => {
     e.preventDefault();

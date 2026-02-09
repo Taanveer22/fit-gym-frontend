@@ -4,14 +4,23 @@ import Swal from "sweetalert2";
 
 const ScheduleList = () => {
   const [schedules, setSchedules] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/schedules`)
+    // if search text exists → use search query
+    const url = searchText
+      ? `http://localhost:5000/schedules?search=${searchText}`
+      : `http://localhost:5000/schedules`;
+    fetch(url)
       .then((res) => res.json())
-      .then((data) => setSchedules(data));
-  }, []);
+      .then((data) => {
+        console.log(data);
+        setSchedules(data);
+      });
+  }, [searchText]);
 
-  // console.log(schedules);
+  console.log(schedules);
+  console.log(searchText);
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/schedules/${id}`, {
@@ -71,7 +80,13 @@ const ScheduleList = () => {
               <path d="m21 21-4.3-4.3"></path>
             </g>
           </svg>
-          <input type="search" required placeholder="Search" />
+          <input
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            type="search"
+            required
+            placeholder="Search"
+          />
         </label>
       </div>
       {/* send data to child */}

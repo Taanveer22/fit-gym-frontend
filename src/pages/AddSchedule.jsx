@@ -18,9 +18,10 @@ const AddSchedule = () => {
       time: formattedTime,
       title: e.target.title.value,
       day: e.target.day.value,
+      isCompleted : false,
     };
 
-    console.log(info);
+    // console.log(info);
 
     const response = await fetch(`http://localhost:5000/createSchedules`, {
       method: "POST",

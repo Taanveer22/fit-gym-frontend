@@ -31,6 +31,25 @@ const ScheduleList = () => {
     setSchedules(remainingSchedules);
   };
 
+  const handleStatus = (id) => {
+    fetch(`http://localhost:5000/status/${id}`, {
+      method: "PATCH",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        if (data.modifiedCount > 0) {
+          Swal.fire("task completed");
+        }
+      });
+
+    const completedSchedules = schedules.map((element) =>
+      // ✅ CORRECT: Spread the single object, then add/override properties
+      element._id === id ? { ...element, isCompleted: true } : element,
+    );
+    setSchedules(completedSchedules);
+  };
+
   return (
     <div>
       {/* search bar */}
@@ -62,6 +81,7 @@ const ScheduleList = () => {
           index={index}
           key={element._id}
           handleDelete={handleDelete}
+          handleStatus={handleStatus}
         ></ScheduleListItem>
       ))}
     </div>

@@ -4,7 +4,7 @@ import { FaCheck } from "react-icons/fa6";
 import { FaCheckDouble } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const ScheduleListItem = ({ element, index, handleDelete }) => {
+const ScheduleListItem = ({ element, index, handleDelete, handleStatus }) => {
   // console.log(element, index);
 
   return (
@@ -32,7 +32,7 @@ const ScheduleListItem = ({ element, index, handleDelete }) => {
               <td>
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => handleDelete(element?._id)}
+                    onClick={() => handleDelete(element._id)}
                     className="btn btn-xs btn-secondary"
                   >
                     <MdDeleteForever size={15}></MdDeleteForever>
@@ -43,8 +43,15 @@ const ScheduleListItem = ({ element, index, handleDelete }) => {
                   >
                     <FaFile size={15}></FaFile>
                   </Link>
-                  <button className="btn btn-xs btn-secondary">
-                    <FaCheck size={15}></FaCheck>
+                  <button
+                    onClick={() => handleStatus(element._id)}
+                    className="btn btn-xs btn-secondary"
+                  >
+                    {element?.isCompleted === true ? (
+                      <FaCheckDouble></FaCheckDouble>
+                    ) : (
+                      <FaCheck size={15}></FaCheck>
+                    )}
                   </button>
                 </div>
               </td>
